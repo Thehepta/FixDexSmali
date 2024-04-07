@@ -31,6 +31,7 @@ package org.jf.baksmali;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import org.jf.baksmali.Adaptors.ClassDefinition;
+import org.jf.baksmali.fix.FixClassDefinition;
 import org.jf.baksmali.formatter.BaksmaliWriter;
 import org.jf.dexlib2.iface.ClassDef;
 import org.jf.dexlib2.iface.DexFile;
@@ -128,7 +129,7 @@ public class Baksmali {
         }
 
         //create and initialize the top level string template
-        ClassDefinition classDefinition = new ClassDefinition(options, classDef);
+        ClassDefinition classDefinition = new FixClassDefinition(options, classDef);
 
         //write the disassembly
         BaksmaliWriter writer = null;

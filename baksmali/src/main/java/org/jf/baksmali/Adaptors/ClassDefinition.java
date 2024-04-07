@@ -243,7 +243,7 @@ public class ClassDefinition {
         }
     }
 
-    private Set<String> writeDirectMethods(BaksmaliWriter writer) throws IOException {
+    public Set<String> writeDirectMethods(BaksmaliWriter writer) throws IOException {
         boolean wroteHeader = false;
         Set<String> writtenMethods = new HashSet<String>();
 
@@ -282,7 +282,7 @@ public class ClassDefinition {
         return writtenMethods;
     }
 
-    private void writeVirtualMethods(BaksmaliWriter writer, Set<String> directMethods)
+    public void writeVirtualMethods(BaksmaliWriter writer, Set<String> directMethods)
             throws IOException {
         boolean wroteHeader = false;
         Set<String> writtenMethods = new HashSet<String>();
