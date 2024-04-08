@@ -51,7 +51,7 @@ public class FixClassDefinition extends ClassDefinition {
             if (methodImpl == null) {
                 MethodDefinition.writeEmptyMethodTo(methodWriter, method, this);
             } else {
-                MethodDefinition methodDefinition = new FixMethodDefinition(this, method, methodImpl);
+                MethodDefinition methodDefinition = new MethodDefinition(this, method, methodImpl);
                 methodDefinition.writeTo(methodWriter);
             }
         }

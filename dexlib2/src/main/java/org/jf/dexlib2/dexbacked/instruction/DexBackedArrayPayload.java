@@ -47,9 +47,9 @@ public class DexBackedArrayPayload extends DexBackedInstruction implements Array
     public final int elementWidth;
     public final int elementCount;
 
-    private static final int ELEMENT_WIDTH_OFFSET = 2;
-    private static final int ELEMENT_COUNT_OFFSET = 4;
-    private static final int ELEMENTS_OFFSET = 8;
+    public static final int ELEMENT_WIDTH_OFFSET = 2;
+    public static final int ELEMENT_COUNT_OFFSET = 4;
+    public static final int ELEMENTS_OFFSET = 8;
 
     public DexBackedArrayPayload(@Nonnull DexBackedDexFile dexFile,
                                  int instructionStart) {

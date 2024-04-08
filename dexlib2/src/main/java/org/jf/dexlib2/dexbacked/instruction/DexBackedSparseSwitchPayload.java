@@ -43,8 +43,8 @@ import java.util.List;
 public class DexBackedSparseSwitchPayload extends DexBackedInstruction implements SparseSwitchPayload {
     public final int elementCount;
 
-    private static final int ELEMENT_COUNT_OFFSET = 2;
-    private static final int KEYS_OFFSET = 4;
+    public static final int ELEMENT_COUNT_OFFSET = 2;
+    public static final int KEYS_OFFSET = 4;
 
     public DexBackedSparseSwitchPayload(@Nonnull DexBackedDexFile dexFile,
                                         int instructionStart) {

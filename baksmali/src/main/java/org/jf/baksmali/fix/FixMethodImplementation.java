@@ -1,6 +1,7 @@
 package org.jf.baksmali.fix;
 
 import com.google.common.collect.ImmutableList;
+import org.jf.baksmali.fix.instruction.FixDexBackedInstruction;
 import org.jf.dexlib2.dexbacked.DexBackedDexFile;
 import org.jf.dexlib2.dexbacked.DexBackedMethod;
 import org.jf.dexlib2.dexbacked.DexBuffer;
@@ -70,7 +71,7 @@ public class FixMethodImplementation implements MethodImplementation {
                             return endOfData();
                         }
 
-                        Instruction instruction = DexBackedInstruction.readFrom(dexFile, reader);
+                        Instruction instruction = FixDexBackedInstruction.readFrom(dexFile, reader);
 
                         // Does the instruction extend past the end of the method?
                         int offset = reader.getOffset();
