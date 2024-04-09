@@ -43,9 +43,9 @@ import java.util.List;
 public class DexBackedPackedSwitchPayload extends DexBackedInstruction implements PackedSwitchPayload {
     public final int elementCount;
 
-    private static final int ELEMENT_COUNT_OFFSET = 2;
-    private static final int FIRST_KEY_OFFSET = 4;
-    private static final int TARGETS_OFFSET = 8;
+    public static final int ELEMENT_COUNT_OFFSET = 2;
+    public static final int FIRST_KEY_OFFSET = 4;
+    public static final int TARGETS_OFFSET = 8;
 
     public DexBackedPackedSwitchPayload(@Nonnull DexBackedDexFile dexFile,
                                         int instructionStart) {
