@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class fixDebugInfo extends DebugInfo {
+public class FixDebugInfo extends DebugInfo {
 
 
     @Nonnull public  DexBackedDexFile dexFile;
@@ -35,7 +35,7 @@ public class fixDebugInfo extends DebugInfo {
 
 
 
-    public fixDebugInfo(DexBackedDexFile dexFile, DexBuffer dexBuffer,int debugInfoOffset, FixMethodImplementation methodImpl) {
+    public FixDebugInfo(DexBackedDexFile dexFile, DexBuffer dexBuffer, int debugInfoOffset, FixMethodImplementation methodImpl) {
         this.dexFile = dexFile;
         this.dexBuffer = dexBuffer;
         this.debugInfoOffset = debugInfoOffset;
@@ -239,7 +239,7 @@ public class fixDebugInfo extends DebugInfo {
     public static DebugInfo newOrEmpty(@Nonnull DexBackedDexFile dexFile,DexBuffer dexBuffer, int debugInfoOffset,
                                        @Nonnull FixMethodImplementation methodImpl) {
 
-        return new fixDebugInfo(dexFile, dexBuffer,debugInfoOffset, methodImpl);
+        return new FixDebugInfo(dexFile, dexBuffer,debugInfoOffset, methodImpl);
     }
 
 }

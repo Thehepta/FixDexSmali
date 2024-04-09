@@ -2,7 +2,6 @@ package org.jf.baksmali.fix;
 
 import com.google.common.collect.ImmutableList;
 import org.jf.dexlib2.dexbacked.DexBackedDexFile;
-import org.jf.dexlib2.dexbacked.DexBackedMethod;
 import org.jf.dexlib2.dexbacked.DexBuffer;
 import org.jf.dexlib2.dexbacked.DexReader;
 import org.jf.dexlib2.dexbacked.instruction.DexBackedInstruction;
@@ -124,17 +123,17 @@ public class FixMethodImplementation implements MethodImplementation {
         int debugOffset = getDebugOffset();
 
         if (debugOffset == -1 || debugOffset == 0) {
-            return fixDebugInfo.newOrEmpty(dexFile,dexBuffer, 0, this);
+            return FixDebugInfo.newOrEmpty(dexFile,dexBuffer, 0, this);
         }
         if (debugOffset < 0) {
             System.err.println(String.format("%s: Invalid debug offset1", method));
-            return fixDebugInfo.newOrEmpty(dexFile, dexBuffer,0, this);
+            return FixDebugInfo.newOrEmpty(dexFile, dexBuffer,0, this);
         }
         if ((debugOffset + dexFile.getBaseDataOffset()) >= dexFile.getBuffer().getBuf().length) {
             System.err.println(String.format("%s: Invalid debug offset2", method));
-            return fixDebugInfo.newOrEmpty(dexFile, dexBuffer,0, this);
+            return FixDebugInfo.newOrEmpty(dexFile, dexBuffer,0, this);
         }
-        return fixDebugInfo.newOrEmpty(dexFile,dexBuffer, debugOffset, this);
+        return FixDebugInfo.newOrEmpty(dexFile,dexBuffer, debugOffset, this);
     }
 
     protected int getDebugOffset() {

@@ -129,7 +129,7 @@ public class Baksmali {
         }
 
         //create and initialize the top level string template
-        ClassDefinition classDefinition = new FixClassDefinition(options, classDef);
+        ClassDefinition classDefinition = new ClassDefinition(options, classDef);
 
         //write the disassembly
         BaksmaliWriter writer = null;

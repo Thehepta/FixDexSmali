@@ -15,8 +15,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FixClassDefinition extends ClassDefinition {
-    public FixClassDefinition(@Nonnull BaksmaliOptions options, @Nonnull ClassDef classDef) {
+
+    FixDumpClassCodeItem fixDumpClassCodeItem;
+    public FixClassDefinition(@Nonnull BaksmaliOptions options, @Nonnull ClassDef classDef, FixDumpClassCodeItem fixDumpClassCodeItem) {
         super(options, classDef);
+        this.fixDumpClassCodeItem = fixDumpClassCodeItem;
     }
 
     @Override
