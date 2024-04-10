@@ -1,17 +1,13 @@
 package org.jf.baksmali.fix;
 
 import java.util.List;
+import java.util.Map;
 
 public class FixDumpClassCodeItem {
 
-    String clsTypeName;
-    List<FixDumpMethodCodeItem> methodCodeItemList;
-
+    public Map<String,FixDumpMethodCodeItem> methodCodeItemList;
 
     public static class FixDumpMethodCodeItem {
-
-        String methodName;
-        String methodSign;
 
         byte[] code_item;
     }

@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.*;
 
@@ -46,7 +47,7 @@ public class FixMain {
         int jobs = 16;
         fixMain.Main1(input,outDir,jobs,null,null);
     }
-    public void Main1(String input, String outputDir, int jobs, List<String> classes,List<FixDumpClassCodeItem> dumpClassCodeItemList){
+    public void Main1(String input, String outputDir, int jobs, List<String> classes, Map<String,FixDumpClassCodeItem> dumpClassCodeItemList){
 
         loadDexFile(input);
 
@@ -167,7 +168,7 @@ public class FixMain {
 
 
     public static boolean disassembleDexFile(DexFile dexFile, File outputDir, int jobs, final BaksmaliOptions options,
-                                             @Nullable List<String> classes, List<FixDumpClassCodeItem> dumpClassCodeItemList) {
+                                             @Nullable List<String> classes,  Map<String,FixDumpClassCodeItem> dumpClassCodeItemList) {
 
         //sort the classes, so that if we're on a case-insensitive file system and need to handle classes with file
         //name collisions, then we'll use the same name for each class, if the dex file goes through multiple
@@ -219,7 +220,7 @@ public class FixMain {
     }
 
     private static boolean disassembleClass(ClassDef classDef, ClassFileNameHandler fileNameHandler,
-                                            BaksmaliOptions options, List<FixDumpClassCodeItem> dumpClassCodeItemList) {
+                                            BaksmaliOptions options,  Map<String,FixDumpClassCodeItem> dumpClassCodeItemList) {
         /**
          * The path for the disassembly file is based on the package name
          * The class descriptor will look something like:
@@ -229,11 +230,11 @@ public class FixMain {
          */
         String classDescriptor = classDef.getType();
         FixDumpClassCodeItem FixDumpClassCodeItem = null;
-//        for(FixDumpClassCodeItem DumpClassCodeItem:dumpClassCodeItemList){
-//            if(DumpClassCodeItem.clsTypeName.equals(classDescriptor)){
-//                FixDumpClassCodeItem = DumpClassCodeItem;
-//            }
-//        }
+        if(dumpClassCodeItemList != null){
+            FixDumpClassCodeItem = dumpClassCodeItemList.get(classDescriptor);
+        }
+
+
         //validate that the descriptor is formatted like we expect
         if (classDescriptor.charAt(0) != 'L' ||
                 classDescriptor.charAt(classDescriptor.length()-1) != ';') {
@@ -251,7 +252,7 @@ public class FixMain {
         }
 
         //create and initialize the top level string template
-        ClassDefinition classDefinition = new FixClassDefinition(options, classDef,FixDumpClassCodeItem);
+        ClassDefinition classDefinition = new FixClassDefinition(options, classDef, FixDumpClassCodeItem);
 
         //write the disassembly
         BaksmaliWriter writer = null;
