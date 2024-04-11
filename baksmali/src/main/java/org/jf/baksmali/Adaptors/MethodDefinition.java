@@ -362,7 +362,7 @@ public class MethodDefinition {
 
         addTries(methodItems);
         if (classDef.options.debugInfo) {
-            addDebugInfo(methodItems);
+//            addDebugInfo(methodItems);
         }
 
         if (classDef.options.sequentialLabels) {

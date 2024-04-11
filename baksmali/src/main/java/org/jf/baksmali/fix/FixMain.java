@@ -40,8 +40,8 @@ public class FixMain {
 
 //        String dexPath = args[1];
 //        String fixPath = args[2];
-        String dexPath = "D:\\apk\\dumpdex\\c078d7b9.dex";
-        String fixPath = "D:\\apk\\dumpdex\\fix.data";
+        String dexPath = "baksmali/src/test/resources/FixTest/c078d7b9.dex";
+        String fixPath = "baksmali/src/test/resources/FixTest/fix.data";
 
         int jobs = 1;
 
