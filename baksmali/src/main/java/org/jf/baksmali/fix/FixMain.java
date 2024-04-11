@@ -21,10 +21,7 @@ import org.jf.util.StringWrapper;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class FixMain {
@@ -41,11 +38,28 @@ public class FixMain {
 
     public static void main(String[] args) {
 
+//        String dexPath = args[1];
+//        String fixPath = args[2];
+        String dexPath = "D:\\apk\\dumpdex\\c078d7b9.dex";
+        String fixPath = "D:\\apk\\dumpdex\\fix.data";
+
+        int jobs = 1;
+
+        Map<String, FixDumpClassCodeItem> fixDumpClassCodeItem = null;
+        try {
+            FileInputStream fileIn = new FileInputStream(fixPath);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            fixDumpClassCodeItem = (Map<String, FixDumpClassCodeItem>) in.readObject();
+            in.close();
+            fileIn.close();
+            System.out.println("Map deserialized successfully.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         FixMain fixMain = new FixMain();
-        String input = "examples/fix/classes4.dex";
-        String outDir = "out1";
-        int jobs = 16;
-        fixMain.Main1(input,outDir,jobs,null,null);
+        fixMain.Main1(dexPath,Integer.toHexString(dexPath.hashCode()),jobs,null,fixDumpClassCodeItem);
+
+
     }
     public void Main1(String input, String outputDir, int jobs, List<String> classes, Map<String,FixDumpClassCodeItem> dumpClassCodeItemList){
 
@@ -253,7 +267,7 @@ public class FixMain {
 
         //create and initialize the top level string template
         ClassDefinition classDefinition = new FixClassDefinition(options, classDef, FixDumpClassCodeItem);
-
+        System.out.println("fix class:"+classDef.getType());
         //write the disassembly
         BaksmaliWriter writer = null;
         try

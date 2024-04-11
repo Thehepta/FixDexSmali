@@ -20,6 +20,7 @@ public class FixClassDefinition extends ClassDefinition {
     public FixClassDefinition(@Nonnull BaksmaliOptions options, @Nonnull ClassDef classDef, FixDumpClassCodeItem fixDumpClassCodeItem) {
         super(options, classDef);
         this.fixDumpClassCodeItem = fixDumpClassCodeItem;
+
     }
 
     @Override
@@ -111,10 +112,14 @@ public class FixClassDefinition extends ClassDefinition {
         DexBackedDexFile dexFile =  ((DexBackedClassDef)classDef).dexFile;
         if(fixDumpClassCodeItem!=null){
             String methodString = getFormatter().getShortMethodDescriptor(method);
-            FixDumpClassCodeItem.FixDumpMethodCodeItem fixDumpMethodCodeItem =  fixDumpClassCodeItem.methodCodeItemList.get(methodString);
-            DexBuffer dexBuffer = new DexBuffer(fixDumpMethodCodeItem.code_item);
-            MethodImplementation implementation = new FixMethodImplementation(dexFile,dexBuffer,method,0);
-            return implementation;
+            System.out.println("fix method : "+methodString);
+            FixDumpMethodCodeItem fixDumpMethodCodeItem =  fixDumpClassCodeItem.methodCodeItemList.get(methodString);
+            if(fixDumpMethodCodeItem!=null) {
+                DexBuffer dexBuffer = new DexBuffer(fixDumpMethodCodeItem.code_item);
+                MethodImplementation implementation = new FixMethodImplementation(dexFile,dexBuffer,method,0);
+                return implementation;
+            }
+
         }
         return method.getImplementation();
     }

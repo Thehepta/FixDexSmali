@@ -1,14 +1,16 @@
 package org.jf.baksmali.fix;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class FixDumpClassCodeItem {
+public class FixDumpClassCodeItem implements Serializable {
 
     public Map<String,FixDumpMethodCodeItem> methodCodeItemList;
 
-    public static class FixDumpMethodCodeItem {
-
-        byte[] code_item;
+    public FixDumpClassCodeItem(Map<String,FixDumpMethodCodeItem> methodCodeItemList ){
+        this.methodCodeItemList = methodCodeItemList;
     }
+
+
 }
