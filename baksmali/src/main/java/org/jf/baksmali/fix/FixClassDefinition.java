@@ -109,11 +109,15 @@ public class FixClassDefinition extends ClassDefinition {
 
     MethodImplementation FixgetImplementation(Method method){
 
+
         DexBackedDexFile dexFile =  ((DexBackedClassDef)classDef).dexFile;
         if(fixDumpClassCodeItem!=null){
             String methodString = getFormatter().getShortMethodDescriptor(method);
             System.out.println("fix method : "+methodString);
-            FixDumpMethodCodeItem fixDumpMethodCodeItem =  fixDumpClassCodeItem.methodCodeItemList.get(methodString);
+            if(methodString.equals("doInit(J)V")){
+                System.out.println("fix method : "+methodString);
+            }
+                FixDumpMethodCodeItem fixDumpMethodCodeItem =  fixDumpClassCodeItem.methodCodeItemList.get(methodString);
             if(fixDumpMethodCodeItem!=null) {
                 DexBuffer dexBuffer = new DexBuffer(fixDumpMethodCodeItem.code_item);
                 MethodImplementation implementation = new FixMethodImplementation(dexFile,dexBuffer,method,0);

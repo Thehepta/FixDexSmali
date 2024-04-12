@@ -40,8 +40,8 @@ public class FixMain {
 
 //        String dexPath = args[1];
 //        String fixPath = args[2];
-        String dexPath = "baksmali/src/test/resources/FixTest/c078d7b9.dex";
-        String fixPath = "baksmali/src/test/resources/FixTest/fix.data";
+        String dexPath = "D:\\apk\\ccdump\\dump\\0x7cd3132000.dex";
+        String fixPath = "D:\\apk\\ccdump\\fix.data";
 
         int jobs = 1;
 
@@ -201,7 +201,13 @@ public class FixMain {
         }
 
         for (final ClassDef classDef: classDefs) {
+            String classDescriptor = classDef.getType();
             if (classSet != null && !classSet.contains(classDef.getType())) {
+                continue;
+            }
+
+            FixDumpClassCodeItem fixDumpClassCodeItem = dumpClassCodeItemList.get(classDescriptor);
+            if(fixDumpClassCodeItem == null){
                 continue;
             }
             tasks.add(executor.submit(new Callable<Boolean>() {
@@ -267,7 +273,7 @@ public class FixMain {
 
         //create and initialize the top level string template
         ClassDefinition classDefinition = new FixClassDefinition(options, classDef, FixDumpClassCodeItem);
-        System.out.println("fix class:"+classDef.getType());
+
         //write the disassembly
         BaksmaliWriter writer = null;
         try

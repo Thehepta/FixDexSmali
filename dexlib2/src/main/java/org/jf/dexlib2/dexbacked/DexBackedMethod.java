@@ -164,9 +164,9 @@ public class DexBackedMethod extends BaseMethodReference implements Method {
     @Nonnull
     public Iterator<String> getParameterNames() {
         DexBackedMethodImplementation methodImpl = getImplementation();
-        if (methodImpl != null) {
-            return methodImpl.getParameterNames(null);
-        }
+//        if (methodImpl != null) {
+//            return methodImpl.getParameterNames(null);
+//        }
         return ImmutableSet.<String>of().iterator();
     }
 
