@@ -1,5 +1,6 @@
 package org.jf.baksmali.fix;
 
+import com.google.common.collect.ImmutableList;
 import org.jf.baksmali.Adaptors.ClassDefinition;
 import org.jf.baksmali.Adaptors.MethodDefinition;
 import org.jf.baksmali.BaksmaliOptions;
@@ -8,6 +9,7 @@ import org.jf.dexlib2.dexbacked.DexBackedClassDef;
 import org.jf.dexlib2.dexbacked.DexBackedDexFile;
 import org.jf.dexlib2.dexbacked.DexBuffer;
 import org.jf.dexlib2.iface.*;
+import org.jf.dexlib2.iface.instruction.Instruction;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -123,7 +125,12 @@ public class FixClassDefinition extends ClassDefinition {
                 MethodImplementation implementation = new FixMethodImplementation(dexFile,dexBuffer,method,0);
                 return implementation;
             }
-
+        }
+        MethodImplementation implementation = method.getImplementation();
+        try {
+            ImmutableList<Instruction> instructions =ImmutableList.copyOf(implementation.getInstructions());
+        }catch (Exception e){
+            return null;
         }
         return method.getImplementation();
     }

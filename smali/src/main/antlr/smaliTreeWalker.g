@@ -455,7 +455,7 @@ method returns[BuilderMethod ret]
 
     if (Iterables.isEmpty(methodImplementation.getInstructions())) {
       if (!isAbstract && !isNative) {
-        throw new SemanticException(input, $I_METHOD, "A non-abstract/non-native method must have at least 1 instruction");
+        //throw new SemanticException(input, $I_METHOD, "A non-abstract/non-native method must have at least 1 instruction");
       }
 
       String methodType;

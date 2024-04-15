@@ -40,8 +40,8 @@ public class FixMain {
 
 //        String dexPath = args[1];
 //        String fixPath = args[2];
-        String dexPath = "D:\\apk\\ccdump\\dump\\0x7cd3132000.dex";
-        String fixPath = "D:\\apk\\ccdump\\fix.data";
+        String dexPath = "D:\\apk\\work\\vip\\dump\\c1420770.dex";
+        String fixPath = "D:\\apk\\work\\vip\\dump\\fix.data";
 
         int jobs = 1;
 
@@ -206,10 +206,10 @@ public class FixMain {
                 continue;
             }
 
-            FixDumpClassCodeItem fixDumpClassCodeItem = dumpClassCodeItemList.get(classDescriptor);
-            if(fixDumpClassCodeItem == null){
-                continue;
-            }
+//            FixDumpClassCodeItem fixDumpClassCodeItem = dumpClassCodeItemList.get(classDescriptor);
+//            if(fixDumpClassCodeItem == null){
+//                continue;
+//            }
             tasks.add(executor.submit(new Callable<Boolean>() {
                 @Override public Boolean call() throws Exception {
                     return disassembleClass(classDef, fileNameHandler, options,dumpClassCodeItemList);
