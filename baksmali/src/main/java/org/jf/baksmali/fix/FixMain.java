@@ -40,8 +40,8 @@ public class FixMain {
 
 //        String dexPath = args[1];
 //        String fixPath = args[2];
-        String dexPath = "D:\\apk\\work\\vip\\dump\\c1420770.dex";
-        String fixPath = "D:\\apk\\work\\vip\\dump\\fix.data";
+        String dexPath = "D:\\git\\smali\\baksmali\\src\\test\\resources\\FixTest\\0x7cd3132000.dex";
+        String fixPath = "D:\\git\\smali\\baksmali\\src\\test\\resources\\FixTest\\china_fix.data";
 
         int jobs = 1;
 
@@ -57,11 +57,10 @@ public class FixMain {
             e.printStackTrace();
         }
         FixMain fixMain = new FixMain();
-        fixMain.Main1(dexPath,Integer.toHexString(dexPath.hashCode()),jobs,null,fixDumpClassCodeItem);
-
+        fixMain.Main1(dexPath,Integer.toHexString(dexPath.hashCode()),jobs,fixDumpClassCodeItem);
 
     }
-    public void Main1(String input, String outputDir, int jobs, List<String> classes, Map<String,FixDumpClassCodeItem> dumpClassCodeItemList){
+    public void Main1(String input, String outputDir, int jobs, Map<String,FixDumpClassCodeItem> dumpClassCodeItemList){
 
         loadDexFile(input);
 
@@ -83,12 +82,24 @@ public class FixMain {
             analysisArguments.classPathDirectories = Lists.newArrayList(inputFile.getAbsoluteFile().getParent());
         }
 
-        if (!disassembleDexFile(dexFile, outputDirectoryFile, jobs, getOptions(), classes,dumpClassCodeItemList)) {
+        if (!disassembleDexFile(dexFile, outputDirectoryFile, jobs, getOptions(),dumpClassCodeItemList)) {
             System.exit(-1);
         }
 
     }
+    public void FixDexMethodbyCallback(byte[] byteArray,File WoekDir,FixMethodCall fixMethodCall){
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArray);
 
+        InputStream inputStream = new BufferedInputStream(byteArrayInputStream);
+        try {
+            DexBackedDexFile dexFile = DexBackedDexFile.fromInputStream(null, inputStream);
+//            if (!disassembleDexFile(dexFile, WoekDir, 1, getOptions(),dumpClassCodeItemList)) {
+//                System.exit(-1);
+//            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     protected boolean showDeodexWarning() {
         return true;
@@ -182,7 +193,7 @@ public class FixMain {
 
 
     public static boolean disassembleDexFile(DexFile dexFile, File outputDir, int jobs, final BaksmaliOptions options,
-                                             @Nullable List<String> classes,  Map<String,FixDumpClassCodeItem> dumpClassCodeItemList) {
+                                             Map<String,FixDumpClassCodeItem> dumpClassCodeItemList) {
 
         //sort the classes, so that if we're on a case-insensitive file system and need to handle classes with file
         //name collisions, then we'll use the same name for each class, if the dex file goes through multiple
@@ -195,16 +206,16 @@ public class FixMain {
         ExecutorService executor = Executors.newFixedThreadPool(jobs);
         List<Future<Boolean>> tasks = Lists.newArrayList();
 
-        Set<String> classSet = null;
-        if (classes != null) {
-            classSet = new HashSet<String>(classes);
-        }
+//        Set<String> classSet = null;
+//        if (classes != null) {
+//            classSet = new HashSet<String>(classes);
+//        }
 
         for (final ClassDef classDef: classDefs) {
-            String classDescriptor = classDef.getType();
-            if (classSet != null && !classSet.contains(classDef.getType())) {
-                continue;
-            }
+//            String classDescriptor = classDef.getType();
+//            if (classSet != null && !classSet.contains(classDef.getType())) {
+//                continue;
+//            }
 
 //            FixDumpClassCodeItem fixDumpClassCodeItem = dumpClassCodeItemList.get(classDescriptor);
 //            if(fixDumpClassCodeItem == null){
