@@ -40,27 +40,17 @@ public class FixMain {
 
 //        String dexPath = args[1];
 //        String fixPath = args[2];
-        String dexPath = "D:\\git\\smali\\baksmali\\src\\test\\resources\\FixTest\\0x7cd3132000.dex";
-        String fixPath = "D:\\git\\smali\\baksmali\\src\\test\\resources\\FixTest\\china_fix.data";
+        String dexPath = "D:\\git\\smali\\baksmali\\src\\test\\resources\\FixTest\\c078d7b9.dex";
+//        String fixPath = "D:\\git\\smali\\baksmali\\src\\test\\resources\\FixTest\\china_fix.data";
 
         int jobs = 1;
 
-        Map<String, FixDumpClassCodeItem> fixDumpClassCodeItem = null;
-        try {
-            FileInputStream fileIn = new FileInputStream(fixPath);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            fixDumpClassCodeItem = (Map<String, FixDumpClassCodeItem>) in.readObject();
-            in.close();
-            fileIn.close();
-            System.out.println("Map deserialized successfully.");
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+
         FixMain fixMain = new FixMain();
-        fixMain.Main1(dexPath,Integer.toHexString(dexPath.hashCode()),jobs,fixDumpClassCodeItem);
+        fixMain.Main1(dexPath,Integer.toHexString(dexPath.hashCode()),jobs);
 
     }
-    public void Main1(String input, String outputDir, int jobs, Map<String,FixDumpClassCodeItem> dumpClassCodeItemList){
+    public void Main1(String input, String outputDir, int jobs){
 
         loadDexFile(input);
 
@@ -82,7 +72,21 @@ public class FixMain {
             analysisArguments.classPathDirectories = Lists.newArrayList(inputFile.getAbsoluteFile().getParent());
         }
 
-        if (!disassembleDexFile(dexFile, outputDirectoryFile, jobs, getOptions(),dumpClassCodeItemList)) {
+
+
+        if (!disassembleDexFile(dexFile, outputDirectoryFile, jobs, getOptions(), new FixClassCall() {
+            @Override
+            public FixDumpClassCodeItem ClassFixCall(String classDescriptor) {
+                System.out.println(classDescriptor);
+                return new FixDumpClassCodeItem(null, new FixMethodCall(null) {
+                    @Override
+                    public FixDumpMethodCodeItem MethodFixCall(String classDescriptor) {
+                        return super.MethodFixCall(classDescriptor);
+                    }
+                });
+//                return null;
+            }
+        })) {
             System.exit(-1);
         }
 
@@ -193,7 +197,7 @@ public class FixMain {
 
 
     public static boolean disassembleDexFile(DexFile dexFile, File outputDir, int jobs, final BaksmaliOptions options,
-                                             Map<String,FixDumpClassCodeItem> dumpClassCodeItemList) {
+                                             FixClassCall fixClassCall ) {
 
         //sort the classes, so that if we're on a case-insensitive file system and need to handle classes with file
         //name collisions, then we'll use the same name for each class, if the dex file goes through multiple
@@ -223,7 +227,7 @@ public class FixMain {
 //            }
             tasks.add(executor.submit(new Callable<Boolean>() {
                 @Override public Boolean call() throws Exception {
-                    return disassembleClass(classDef, fileNameHandler, options,dumpClassCodeItemList);
+                    return disassembleClass(classDef, fileNameHandler, options,fixClassCall);
                 }
             }));
         }
@@ -251,7 +255,7 @@ public class FixMain {
     }
 
     private static boolean disassembleClass(ClassDef classDef, ClassFileNameHandler fileNameHandler,
-                                            BaksmaliOptions options,  Map<String,FixDumpClassCodeItem> dumpClassCodeItemList) {
+                                            BaksmaliOptions options,  FixClassCall fixClassCall) {
         /**
          * The path for the disassembly file is based on the package name
          * The class descriptor will look something like:
@@ -260,11 +264,8 @@ public class FixMain {
          * package name are separated by '/'
          */
         String classDescriptor = classDef.getType();
-        FixDumpClassCodeItem FixDumpClassCodeItem = null;
-        if(dumpClassCodeItemList != null){
-            FixDumpClassCodeItem = dumpClassCodeItemList.get(classDescriptor);
-        }
 
+        FixDumpClassCodeItem fixdumpclasscodeitem = fixClassCall.ClassFixCall(classDescriptor);
 
         //validate that the descriptor is formatted like we expect
         if (classDescriptor.charAt(0) != 'L' ||
@@ -283,7 +284,7 @@ public class FixMain {
         }
 
         //create and initialize the top level string template
-        ClassDefinition classDefinition = new FixClassDefinition(options, classDef, FixDumpClassCodeItem);
+        ClassDefinition classDefinition = new FixClassDefinition(options, classDef, fixdumpclasscodeitem);
 
         //write the disassembly
         BaksmaliWriter writer = null;
