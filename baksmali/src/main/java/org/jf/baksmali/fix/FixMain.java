@@ -47,10 +47,27 @@ public class FixMain {
 
 
         FixMain fixMain = new FixMain();
-        fixMain.Main1(dexPath,Integer.toHexString(dexPath.hashCode()),jobs);
+        fixMain.Main1(dexPath,Integer.toHexString(dexPath.hashCode()),jobs,new FixClassCall() {
+            @Override
+            public FixDumpClassCodeItem ClassFixCall(String classDescriptor) {
+                System.out.println(classDescriptor);
+
+
+                return new FixDumpClassCodeItem(null, new FixMethodCall(null) {
+                    @Override
+                    public FixDumpMethodCodeItem MethodFixCall(String classDescriptor) {
+//                        return super.MethodFixCall(classDescriptor);
+                        System.out.println(classDescriptor);
+
+                        return null;
+                    }
+                });
+//                return null;
+            }
+        });
 
     }
-    public void Main1(String input, String outputDir, int jobs){
+    public void Main1(String input, String outputDir, int jobs,FixClassCall fixClassCall){
 
         loadDexFile(input);
 
@@ -74,19 +91,7 @@ public class FixMain {
 
 
 
-        if (!disassembleDexFile(dexFile, outputDirectoryFile, jobs, getOptions(), new FixClassCall() {
-            @Override
-            public FixDumpClassCodeItem ClassFixCall(String classDescriptor) {
-                System.out.println(classDescriptor);
-                return new FixDumpClassCodeItem(null, new FixMethodCall(null) {
-                    @Override
-                    public FixDumpMethodCodeItem MethodFixCall(String classDescriptor) {
-                        return super.MethodFixCall(classDescriptor);
-                    }
-                });
-//                return null;
-            }
-        })) {
+        if (!disassembleDexFile(dexFile, outputDirectoryFile, jobs, getOptions(), fixClassCall)) {
             System.exit(-1);
         }
 
@@ -265,7 +270,7 @@ public class FixMain {
          */
         String classDescriptor = classDef.getType();
 
-        FixDumpClassCodeItem fixdumpclasscodeitem = fixClassCall.ClassFixCall(classDescriptor);
+
 
         //validate that the descriptor is formatted like we expect
         if (classDescriptor.charAt(0) != 'L' ||
@@ -283,9 +288,9 @@ public class FixMain {
             return false;
         }
 
-        //create and initialize the top level string template
+        FixDumpClassCodeItem fixdumpclasscodeitem = fixClassCall.ClassFixCall(classDescriptor);
         ClassDefinition classDefinition = new FixClassDefinition(options, classDef, fixdumpclasscodeitem);
-
+        
         //write the disassembly
         BaksmaliWriter writer = null;
         try
