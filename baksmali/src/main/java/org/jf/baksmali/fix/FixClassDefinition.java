@@ -119,12 +119,12 @@ public class FixClassDefinition extends ClassDefinition {
                 FixDumpMethodCodeItem fixDumpMethodCodeItem =  fixDumpClassCodeItem.getMethodCodeItemList(methodString);
             if(fixDumpMethodCodeItem!=null) {
                 DexBuffer dexBuffer = new DexBuffer(fixDumpMethodCodeItem.code_item);
-                MethodImplementation implementation = new FixMethodImplementation(dexFile,dexBuffer,method,0);
-                return implementation;
+                return new FixMethodImplementation(dexFile,dexBuffer,method,0);
             }
         }
         MethodImplementation implementation = method.getImplementation();
         try {
+            assert implementation != null;
             ImmutableList<Instruction> instructions =ImmutableList.copyOf(implementation.getInstructions());
         }catch (Exception e){
             return null;

@@ -92,7 +92,7 @@ public class FixMain {
 
 
         if (!disassembleDexFile(dexFile, outputDirectoryFile, jobs, getOptions(), fixClassCall)) {
-            System.exit(-1);
+            System.err.println("FixSmali error,but not exit");
         }
 
     }
