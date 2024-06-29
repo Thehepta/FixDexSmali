@@ -1,19 +1,13 @@
-### About
+### 原项目地址
+https://github.com/JesusFreke/smali
 
-smali/baksmali is an assembler/disassembler for the dex format used by dalvik, Android's Java VM implementation. The syntax is loosely based on Jasmin's/dedexer's syntax, and supports the full functionality of the dex format (annotations, debug info, line info, etc.)
+注：目前上面地址并未更新，可以看看下面这个
 
-Downloads are at  https://bitbucket.org/JesusFreke/smali/downloads/. If you are interested in submitting a patch, feel free to send me a pull request here.
+https://github.com/google/smali
 
-See [the wiki](https://github.com/JesusFreke/smali/wiki) for more info/news/release notes/etc.
+## 说明
+在 baksmali 的基础上，添加了修复methodCodeItem的功能，然后通过smali回编译。主要是在原来的基础上增加了一个方法的buff，修复的方法可以不通过dexbuff,通过传入的这个buff去修复。
+剩下就是一些强制编译，去掉某些可能导致运行退出的问题，这样也导致了编译出来的dex文件不是非常标准，没法运行，但是这部分代码是可以查看的。
 
-#### Support
-- [github Issue tracker](https://github.com/JesusFreke/smali/issues) - For any bugs/issues/feature requests
-- [#smali on freenode](http://webchat.freenode.net/?channels=smali) - Free free to drop by and ask a question. Don't expect an instant response, but if you hang around someone will respond.
-
-
-#### Some useful links for getting started with smali
-
-- [Official dex bytecode reference](https://source.android.com/devices/tech/dalvik/dalvik-bytecode.html)
-- [Registers wiki page](https://github.com/JesusFreke/smali/wiki/Registers)
-- [Types, Methods and Fields wiki page](https://github.com/JesusFreke/smali/wiki/TypesMethodsAndFields)
-- [Official dex format reference](https://source.android.com/devices/tech/dalvik/dex-format.html)
+可以看完整的使用项目
+https://github.com/Thehepta/androidGRPC
